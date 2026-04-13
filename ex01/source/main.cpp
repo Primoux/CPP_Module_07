@@ -14,6 +14,11 @@ void increment(T &elem)
 {
 	elem++;
 }
+template <typename T>
+void decrement(T &elem)
+{
+	elem--;
+}
 
 void toUpper(std::string &s)
 {
@@ -23,7 +28,7 @@ void toUpper(std::string &s)
 
 int main(void)
 {
-	int		ints[] = {1, 2, 3, 4, 5};
+	int		ints[] = {1, 2, 3, 4, 5, 6, 7, 8 , 9, 10};
 	size_t	intsLen = sizeof(ints) / sizeof(ints[0]);
 
 	std::cout << BCYAN << "=== int[] ===" << RESET << std::endl;
@@ -37,7 +42,15 @@ int main(void)
 	::iter(ints, intsLen, print<int>);
 	std::cout << std::endl;
 
+	::iter(ints, intsLen, decrement<int>);
+
+	std::cout << LGREEN << "After decrement: " << RESET;
+	::iter(ints, intsLen, print<int>);
+	
 	std::cout << std::endl;
+	
+	std::cout << std::endl;
+
 
 	std::string strs[] = {"hello", "world", "42", "school"};
 	size_t		strsLen = sizeof(strs) / sizeof(strs[0]);
