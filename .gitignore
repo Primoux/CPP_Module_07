@@ -1,5 +1,7 @@
 .build/
 whatever
+Array
 *.o
 *.d
 compile_commands.json
+.cache/

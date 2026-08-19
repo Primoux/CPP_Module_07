@@ -1,11 +1,13 @@
 .PHONY : all re fclean clean run
 
-NAME			= Array
+
+
+NAME			= whatever
 
 MAKEFLAGS		+= -j $$(nproc)
 
 CC				= c++
-CFLAGS			= -std=c++98 -Wall -Wextra -Werror
+CFLAGS			= -std=c++98 -Wall -Wextra -Werror -g3
 DEPS			= -MMD -MP
 
 OBJ_DIR			= .build/
@@ -36,7 +38,7 @@ valgrind: all
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 re: fclean
-	make -j
+	$(MAKE) all
 
 clean:
 	rm -rf $(OBJ_DIR)

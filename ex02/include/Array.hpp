@@ -1,6 +1,6 @@
 #ifndef ARRAY_HPP
 
-
+#include <iostream>
 
 template<typename T>
 class Array
@@ -24,6 +24,8 @@ class Array
 	size_t size() const;
 };
 
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Array<T>& arr);
 #include "Array.tpp"
 
 #endif // !ARRAY_HPP
