@@ -9,7 +9,7 @@ int main( void )
 
 	std::cout << BPURPLE << "a = " << a << ", b = " << b << std::endl;
 
-	::swap( a, b );
+	::swap(a, b);
 	std::cout << BPURPLE << "a = " << a << ", b = " << b << std::endl;
 	std::cout << BGREEN << "min( a, b ) = " << ::min( a, b ) << std::endl;
 	std::cout << BRED << "max( a, b ) = " << ::max( a, b ) << std::endl;
@@ -24,5 +24,11 @@ int main( void )
 	std::cout << BGREEN << "min( c, d ) = " << ::min( c, d ) << std::endl;
 	std::cout << BRED << "max( c, d ) = " << ::max( c, d ) << std::endl;
 
+	std::string e = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+	std::string f = "f";
+
+	std::cout << BPURPLE << "e = " << e << ", f = " << f << std::endl;
+	std::cout << BGREEN << "min( e, f ) = " << ::min( e, f ) << std::endl;
+	std::cout << BRED << "max( e, f ) = " << ::max( e, f ) << std::endl;
 	return 0;
 }
