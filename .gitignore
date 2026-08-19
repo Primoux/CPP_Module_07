@@ -2,3 +2,4 @@
 whatever
 *.o
 *.d
+compile_commands.json
