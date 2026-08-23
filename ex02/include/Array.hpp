@@ -1,5 +1,7 @@
 #ifndef ARRAY_HPP
+# define ARRAY_HPP
 
+#include <cstddef>
 #include <iostream>
 
 template<typename T>
