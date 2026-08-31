@@ -41,13 +41,21 @@ void toA(std::string &s)
 		s[i] = 'A';
 }
 
+void toB(std::string &s)
+{
+	for (size_t i = 0; i < s.size(); i++)
+		s[i] = 'B';
+}
+
 void testInt(void)
 {
 	std::cout << BYELLOW "\n=== TEST 1: int array ===" RESET << std::endl;
-	int		ints[] = {1, 2, 3, 4, 5, 6, 7, 8 , 9, 10};
+	int		ints[10];
 	size_t	intsLen = sizeof(ints) / sizeof(ints[0]);
 
-	std::cout << LYELLOW << "Before: " << RESET;
+	for (size_t i = 0; i < intsLen; i++)
+		ints[i] = rand() % 500;
+	std::cout << LYELLOW << "Before:		" << RESET;
 	::iter(ints, intsLen, print<int>);
 	std::cout << std::endl;
 
@@ -67,7 +75,7 @@ void testString(void)
 	std::string	strs[] = {"Hello", "World", "This", "Is", "A", "Test"};
 	size_t		strsLen = sizeof(strs) / sizeof(strs[0]);
 
-	std::cout << LYELLOW << "Before: " << RESET;
+	std::cout << LYELLOW << "Before:" << RESET;
 	::iter(strs, strsLen, print<std::string>);
 	std::cout << std::endl;
 
@@ -85,8 +93,8 @@ void testString(void)
 
 void testToA(void)
 {
-	std::cout << BYELLOW "\n=== TEST 3: toA ===" RESET << std::endl;
-	std::string	strs[] = {"Hello", "World", "This", "Is", "A", "Test"};
+	std::cout << BYELLOW "\n=== TEST 3: toA and toB ===" RESET << std::endl;
+	std::string	strs[] = {"Hello", "World", "This", "Is", "A", "Test", "Very big string to test the iter function with a string that is longer than the others"};
 	size_t		strsLen = sizeof(strs) / sizeof(strs[0]);
 	std::cout << LYELLOW << "Before: " << RESET;
 	::iter(strs, strsLen, print<std::string>);
@@ -94,6 +102,11 @@ void testToA(void)
 
 	::iter(strs, strsLen, toA);
 	std::cout << LGREEN << "After toA: " << RESET;
+	::iter(strs, strsLen, print<std::string>);
+	std::cout << std::endl;
+
+	::iter(strs, strsLen, toB);
+	std::cout << LGREEN << "After toB: " << RESET;
 	::iter(strs, strsLen, print<std::string>);
 	std::cout << std::endl;
 }
@@ -105,7 +118,7 @@ int main(int argc, char** argv)
 	static const test_func tests[] = {
 		testInt,
 		testString,
-		testToA
+		testToA,
 	};
 	const int num_tests = sizeof(tests) / sizeof(tests[0]) + 1;
 

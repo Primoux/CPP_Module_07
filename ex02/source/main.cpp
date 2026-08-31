@@ -183,6 +183,7 @@ static void test_bad_alloc(void)
 	try
 	{
 		Array<int> arr(1);
+		arr[0] = 42;
 	}
 	catch (const std::exception& e)
 	{
