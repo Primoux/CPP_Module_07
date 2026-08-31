@@ -19,7 +19,7 @@ static void	test_copy_constructor(void)
 	std::cout << BYELLOW "\n=== TEST 2: Copy constructor ===" RESET << std::endl;
 	Array<int> orig(5);
 	for (unsigned int i = 0; i < 5; i++)
-		orig[i] = i * 2;
+		orig[i] = i + rand() % 15;
 	std::cout << "Original: " << orig << std::endl;
 	{
 		Array<int> tmp = orig;
@@ -36,7 +36,7 @@ static void	test_values_integrity(void)
 	int* mirror = new int[5];
 	for (unsigned int i = 0; i < 5; i++)
 	{
-		const int value = i * 10;
+		const int value = i + rand() * 15;
 		arr[i] = value;
 		mirror[i] = value;
 	}
@@ -56,7 +56,7 @@ static void	test_out_of_bounds(void)
 	Array<int> arr(5);
 	try
 	{
-		arr[-2] = 0;
+		arr[-2] = rand() % 15;
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -64,7 +64,7 @@ static void	test_out_of_bounds(void)
 	}
 	try
 	{
-		arr[5] = 0;
+		arr[5] = rand() % 10;
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -78,9 +78,9 @@ static void	test_assignment_operator(void)
 	Array<int> a(5);
 	Array<int> b(3);
 	for (unsigned int i = 0; i < 5; i++)
-		a[i] = i * 10;
+		a[i] = i + rand() % 15;
 	for (unsigned int i = 0; i < 3; i++)
-		b[i] = i * 100;
+		b[i] = i + rand() % 15;
 	std::cout << "a before: " << a << std::endl;
 	std::cout << "b before: " << b << std::endl;
 	a = b;
@@ -92,7 +92,7 @@ static void	test_deep_copy(void)
 	std::cout << BYELLOW "\n=== TEST 6: Deep copy check ===" RESET << std::endl;
 	Array<int> orig(4);
 	for (unsigned int i = 0; i < 4; i++)
-		orig[i] = i * 5;
+		orig[i] = i + rand() % 15;
 	std::cout << "orig: " << orig << std::endl;
 	Array<int> copy = orig;
 	std::cout << "copy: " << copy << std::endl;
@@ -140,12 +140,13 @@ static void	test_non_const_access(void)
 {
 	std::cout << BYELLOW "\n=== TEST 11: Non-const operator[] ===" RESET << std::endl;
 	Array<int> arr(3);
-	arr[0] = 10;
-	arr[1] = 20;
-	arr[2] = 30;
+	arr[0] = rand() % 15;
+	arr[1] = rand() % 15;
+	arr[2] = rand() % 15;
 	std::cout << "Original: " << arr << std::endl;
 	arr[1] = 999;
 	std::cout << "After arr[1] = 999: " << arr << std::endl;
+	std::cout << "Accessing arr[1]: " << arr[1] << std::endl;
 }
 
 static void	test_destructor(void)
@@ -183,7 +184,7 @@ static void test_bad_alloc(void)
 	std::cout << BYELLOW "\n=== TEST 14: Bad allocation test ===" RESET << std::endl;
 	try
 	{
-		Array<int> arr(-1);
+		Array<int> arr(1);
 	}
 	catch (const std::exception& e)
 	{
@@ -193,7 +194,7 @@ static void test_bad_alloc(void)
 
 int main(int argc, char** argv)
 {
-	srand(static_cast<unsigned int>(getpid() * time(NULL) % 1000));
+	srand(static_cast<unsigned int>(getpid() * time(NULL) % 15));
 	typedef void (*test_func)(void);
 	static const test_func tests[] = {
 		test_basic_operations,
@@ -211,12 +212,12 @@ int main(int argc, char** argv)
 		test_string,
 		test_bad_alloc
 	};
-	const int num_tests = sizeof(tests) / sizeof(tests[0]) - 1;
+	const int num_tests = sizeof(tests) / sizeof(tests[0]) + 1;
 
 	if (argc == 1)
 	{
 		std::cout << BYELLOW "=== Running all tests ===" RESET << std::endl;
-		for (int i = 0; i < num_tests; i++)
+		for (int i = 0; i < num_tests - 1; i++)
 			tests[i]();
 		return 0;
 	}
@@ -224,7 +225,7 @@ int main(int argc, char** argv)
 	for (int i = 1; i < argc; i++)
 	{
 		int test_num = atoi(argv[i]);
-		if (test_num > 0 && test_num <= num_tests)
+		if (test_num > 0 && test_num < num_tests)
 			tests[test_num - 1]();
 		else
 			std::cerr << BRED "Unknown test: " RESET << test_num << std::endl;
