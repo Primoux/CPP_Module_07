@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "whatever.hpp"
 #include "color.h"
 
@@ -28,11 +29,11 @@ void test_swap(void)
 	std::cout << BBLUE << "After swap: a = " << a << ", b = " << b << RESET << std::endl;
 }
 
-void all_test(void)
+void test_combined(void)
 {
 	std::cout << BYELLOW "\n=== TEST 4: all tests ===" RESET << std::endl;
-	int a = 2;
-	int b = 3;
+	std::string a = "string1";
+	std::string b = "string2";
 	std::cout << BBLUE << "Before swap: a = " << a << ", b = " << b << RESET << std::endl;
 	std::cout << BGREEN << "min(" << a << ", " << b << ") = " << ::min(a, b) << RESET << std::endl;
 	std::cout << BRED << "max(" << a << ", " << b << ") = " << ::max(a, b) << RESET << std::endl;
@@ -47,6 +48,6 @@ int main( void )
 	test_min();
 	test_max();
 	test_swap();
-	all_test();
+	test_combined();
 	return 0;
 }

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Array.tpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: enchevri <enchevri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/13 16:48:24 by enchevri          #+#    #+#             */
-/*   Updated: 2026/08/19 13:45:09 by enchevri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef ARRAY_TPP
 #define ARRAY_TPP
@@ -25,8 +14,7 @@ template<typename T>
 Array<T>::~Array()
 {
 	std::cout << BRED << "Destructor called" << RESET << std::endl;
-	if (this->_size > 0)
-		delete[] this->_array;
+	delete[] this->_array;
 }
 
 template<typename T>
@@ -61,15 +49,15 @@ template<typename T>
 Array<T>& Array<T>::operator=(Array const &other)
 {
 	std::cout << BBLUE << "Copy assignment operator called" << RESET << std::endl;
-	if (this != &other)
-	{
-		if (this->_size > 0)
-			delete[] this->_array;
-		this->_size = other._size;
-		this->_array = new T[this->_size];
-		for (unsigned int i = 0; i < this->_size; i++)
-			this->_array[i] = other._array[i];
-	}
+	Array<T> tmp(other);
+
+	T *savedArray = this->_array;
+	size_t savedSize = this->_size;
+
+	this->_array = tmp._array;
+	this->_size = tmp._size;
+	tmp._array = savedArray;
+	tmp._size = savedSize;
 	return *this;
 }
 
@@ -85,8 +73,16 @@ template<typename T>
 Array<T>::Array(Array const &original) : _array(new T[original._size]), _size(original._size)
 {
 	std::cout << BBLUE << "Copy constructor called" << RESET << std::endl;
-	for (unsigned int i = 0; i < this->_size; i++)
-		this->_array[i] = original._array[i];
+	try
+	{
+		for (unsigned int i = 0; i < this->_size; i++)
+			this->_array[i] = original._array[i];
+	}
+	catch (...)
+	{
+		delete[] this->_array;
+		throw;
+	}
 }
 
 #endif //ARRAY_TPP

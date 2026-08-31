@@ -14,6 +14,7 @@ void increment(T &elem)
 {
 	elem++;
 }
+
 template <typename T>
 void decrement(T &elem)
 {
@@ -32,7 +33,7 @@ void toLower(std::string &s)
 		s[i] = static_cast<char>(std::tolower(static_cast<unsigned char>(s[i])));
 }
 
-void test_int_array(void)
+void test_int(void)
 {
 	std::cout << BYELLOW "\n=== TEST 1: int array ===" RESET << std::endl;
 	int		ints[] = {1, 2, 3, 4, 5, 6, 7, 8 , 9, 10};
@@ -43,18 +44,16 @@ void test_int_array(void)
 	std::cout << std::endl;
 
 	::iter(ints, intsLen, increment<int>);
-
 	std::cout << LGREEN << "After increment: " << RESET;
 	::iter(ints, intsLen, print<int>);
 	std::cout << std::endl;
 
 	::iter(ints, intsLen, decrement<int>);
-
 	std::cout << LGREEN << "After decrement: " << RESET;
 	::iter(ints, intsLen, print<int>);
 }
 
-void test_string_array(void)
+void test_string(void)
 {
 	std::cout << BYELLOW "\n=== TEST 2: string array ===" RESET << std::endl;
 	std::string	strs[] = {"Hello", "World", "This", "Is", "A", "Test"};
@@ -65,7 +64,6 @@ void test_string_array(void)
 	std::cout << std::endl;
 
 	::iter(strs, strsLen, toUpper);
-
 	std::cout << LGREEN << "After toUpper: " << RESET;
 	::iter(strs, strsLen, print<std::string>);
 	std::cout << std::endl;
@@ -79,7 +77,7 @@ void test_string_array(void)
 
 int main(void)
 {
-	test_int_array();
-	test_string_array();
+	test_int();
+	test_string();
 	return (0);
 }
