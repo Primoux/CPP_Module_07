@@ -2,13 +2,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "Array.hpp"
 
 static void	test_basic_operations(void)
 {
 	std::cout << BYELLOW "=== TEST 1: Basic operations ===" RESET << std::endl;
 	Array<int> numbers(10);
-	srand(static_cast<unsigned int>(time(NULL)));
 	for (unsigned int i = 0; i < 10; i++)
 		numbers[i] = rand() % 15;
 	std::cout << numbers << std::endl;
@@ -191,71 +191,44 @@ static void test_bad_alloc(void)
 	}
 }
 
-int main(void)
+int main(int argc, char** argv)
 {
-	test_basic_operations();
-	test_copy_constructor();
-	test_values_integrity();
-	test_out_of_bounds();
-	test_assignment_operator();
-	test_deep_copy();
-	test_different_types();
-	test_edge_cases();
-	test_non_const_access();
-	test_destructor();
-	test_string();
-	test_bad_alloc();
+	srand(static_cast<unsigned int>(getpid() * time(NULL) % 1000));
+	typedef void (*test_func)(void);
+	static const test_func tests[] = {
+		test_basic_operations,
+		test_copy_constructor,
+		test_values_integrity,
+		test_out_of_bounds,
+		test_assignment_operator,
+		test_deep_copy,
+		test_different_types,
+		test_different_types,
+		test_edge_cases,
+		test_edge_cases,
+		test_non_const_access,
+		test_destructor,
+		test_string,
+		test_bad_alloc
+	};
+	const int num_tests = sizeof(tests) / sizeof(tests[0]) - 1;
+
+	if (argc == 1)
+	{
+		std::cout << BYELLOW "=== Running all tests ===" RESET << std::endl;
+		for (int i = 0; i < num_tests; i++)
+			tests[i]();
+		return 0;
+	}
+
+	for (int i = 1; i < argc; i++)
+	{
+		int test_num = atoi(argv[i]);
+		if (test_num > 0 && test_num <= num_tests)
+			tests[test_num - 1]();
+		else
+			std::cerr << BRED "Unknown test: " RESET << test_num << std::endl;
+	}
+
 	return 0;
 }
-
-
-// #define MAX_VAL 750
-// int main(int, char**)
-// {
-//     Array<int> numbers(MAX_VAL);
-//     int* mirror = new int[MAX_VAL];
-//     srand(time(NULL));
-//     for (int i = 0; i < MAX_VAL; i++)
-//     {
-//         const int value = rand();
-//         numbers[i] = value;
-//         mirror[i] = value;
-//     }
-//     //SCOPE
-//     {
-//         Array<int> tmp = numbers;
-//         Array<int> test(tmp);
-//     }
-
-//     for (int i = 0; i < MAX_VAL; i++)
-//     {
-//         if (mirror[i] != numbers[i])
-//         {
-//             std::cerr << "didn't save the same value!!" << std::endl;
-//             return 1;
-//         }
-//     }
-//     try
-//     {
-//         numbers[-2] = 0;
-//     }
-//     catch(const std::exception& e)
-//     {
-//         std::cerr << e.what() << '\n';
-//     }
-//     try
-//     {
-//         numbers[MAX_VAL] = 0;
-//     }
-//     catch(const std::exception& e)
-//     {
-//         std::cerr << e.what() << '\n';
-//     }
-
-//     for (int i = 0; i < MAX_VAL; i++)
-//     {
-//         numbers[i] = rand();
-//     }
-//     delete [] mirror;//
-//     return 0;
-// }
