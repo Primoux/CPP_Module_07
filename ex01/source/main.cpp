@@ -26,12 +26,18 @@ void toUpper(std::string &s)
 		s[i] = static_cast<char>(std::toupper(static_cast<unsigned char>(s[i])));
 }
 
-int main(void)
+void toLower(std::string &s)
 {
+	for (size_t i = 0; i < s.size(); i++)
+		s[i] = static_cast<char>(std::tolower(static_cast<unsigned char>(s[i])));
+}
+
+void test_int_array(void)
+{
+	std::cout << BYELLOW "\n=== TEST 1: int array ===" RESET << std::endl;
 	int		ints[] = {1, 2, 3, 4, 5, 6, 7, 8 , 9, 10};
 	size_t	intsLen = sizeof(ints) / sizeof(ints[0]);
 
-	std::cout << BCYAN << "=== int[] ===" << RESET << std::endl;
 	std::cout << LYELLOW << "Before: " << RESET;
 	::iter(ints, intsLen, print<int>);
 	std::cout << std::endl;
@@ -46,16 +52,14 @@ int main(void)
 
 	std::cout << LGREEN << "After decrement: " << RESET;
 	::iter(ints, intsLen, print<int>);
-	
-	std::cout << std::endl;
-	
-	std::cout << std::endl;
+}
 
-
-	std::string strs[] = {"hello", "world", "42", "school"};
+void test_string_array(void)
+{
+	std::cout << BYELLOW "\n=== TEST 2: string array ===" RESET << std::endl;
+	std::string	strs[] = {"Hello", "World", "This", "Is", "A", "Test"};
 	size_t		strsLen = sizeof(strs) / sizeof(strs[0]);
 
-	std::cout << BCYAN << "=== std::string[] ===" << RESET << std::endl;
 	std::cout << LYELLOW << "Before: " << RESET;
 	::iter(strs, strsLen, print<std::string>);
 	std::cout << std::endl;
@@ -66,5 +70,16 @@ int main(void)
 	::iter(strs, strsLen, print<std::string>);
 	std::cout << std::endl;
 
+	::iter(strs, strsLen, toLower);
+
+	std::cout << LGREEN << "After toLower: " << RESET;
+	::iter(strs, strsLen, print<std::string>);
+	std::cout << std::endl;
+}
+
+int main(void)
+{
+	test_int_array();
+	test_string_array();
 	return (0);
 }
