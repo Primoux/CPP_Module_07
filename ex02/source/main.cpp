@@ -108,14 +108,13 @@ static void	test_deep_copy(void)
 
 static void	test_different_types(void)
 {
-	std::cout << BYELLOW "\n=== TEST 7: Different types (float) ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 7: Different types ===" RESET << std::endl;
 	Array<float> floats(3);
 	floats[0] = 3.14f;
 	floats[1] = 2.71f;
 	floats[2] = 1.41f;
 	std::cout << "Float array: " << floats << std::endl;
 
-	std::cout << BYELLOW "\n=== TEST 8: Different types (string) ===" RESET << std::endl;
 	Array<std::string> strings(3);
 	strings[0] = "Hello";
 	strings[1] = "World";
@@ -125,12 +124,11 @@ static void	test_different_types(void)
 
 static void	test_edge_cases(void)
 {
-	std::cout << BYELLOW "\n=== TEST 9: Edge case - size 0 ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 8: Edge case ===" RESET << std::endl;
 	Array<int> empty(0);
 	std::cout << "Empty array size: " << empty.size() << std::endl;
 	std::cout << "Empty array: " << empty << std::endl;
 
-	std::cout << BYELLOW "\n=== TEST 10: Edge case - size 1 ===" RESET << std::endl;
 	Array<int> single(1);
 	single[0] = 42;
 	std::cout << "Single element: " << single << std::endl;
@@ -138,7 +136,7 @@ static void	test_edge_cases(void)
 
 static void	test_non_const_access(void)
 {
-	std::cout << BYELLOW "\n=== TEST 11: Non-const operator[] ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 9: Non-const operator[] ===" RESET << std::endl;
 	Array<int> arr(3);
 	arr[0] = rand() % 15;
 	arr[1] = rand() % 15;
@@ -151,7 +149,7 @@ static void	test_non_const_access(void)
 
 static void	test_destructor(void)
 {
-	std::cout << BYELLOW "\n=== TEST 12: Destructor check ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 10: Destructor check ===" RESET << std::endl;
 	std::cout << "Creating temporary..." << std::endl;
 	{
 		Array<int> temp(2);
@@ -164,7 +162,7 @@ static void	test_destructor(void)
 
 static void test_string(void)
 {
-	std::cout << BYELLOW "\n=== TEST 13: String test ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 11: String test ===" RESET << std::endl;
 	try
 	{
 		Array<std::string> arr(3);
@@ -181,7 +179,7 @@ static void test_string(void)
 
 static void test_bad_alloc(void)
 {
-	std::cout << BYELLOW "\n=== TEST 14: Bad allocation test ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 12: Bad allocation test ===" RESET << std::endl;
 	try
 	{
 		Array<int> arr(1);
@@ -194,7 +192,7 @@ static void test_bad_alloc(void)
 
 int main(int argc, char** argv)
 {
-	srand(static_cast<unsigned int>(getpid() * time(NULL) % 15));
+	srand(static_cast<unsigned int>(getpid() * time(NULL)));
 	typedef void (*test_func)(void);
 	static const test_func tests[] = {
 		test_basic_operations,
@@ -204,8 +202,6 @@ int main(int argc, char** argv)
 		test_assignment_operator,
 		test_deep_copy,
 		test_different_types,
-		test_different_types,
-		test_edge_cases,
 		test_edge_cases,
 		test_non_const_access,
 		test_destructor,
@@ -222,6 +218,7 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
+	std::cout << BYELLOW "=== Running selected tests ===" RESET << std::endl;
 	for (int i = 1; i < argc; i++)
 	{
 		int test_num = atoi(argv[i]);
@@ -232,4 +229,59 @@ int main(int argc, char** argv)
 	}
 
 	return 0;
+}
+
+
+#include <iostream>
+#include <Array.hpp>
+
+#define MAX_VAL 750
+int main(int, char**)
+{
+    Array<int> numbers(MAX_VAL);
+    int* mirror = new int[MAX_VAL];
+    srand(time(NULL));
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        const int value = rand();
+        numbers[i] = value;
+        mirror[i] = value;
+    }
+    //SCOPE
+    {
+        Array<int> tmp = numbers;
+        Array<int> test(tmp);
+    }
+
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        if (mirror[i] != numbers[i])
+        {
+            std::cerr << "didn't save the same value!!" << std::endl;
+            return 1;
+        }
+    }
+    try
+    {
+        numbers[-2] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    try
+    {
+        numbers[MAX_VAL] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        numbers[i] = rand();
+    }
+    delete [] mirror;//
+    return 0;
 }
