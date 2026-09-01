@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include <limits>
 #include "Array.hpp"
 
 static void	test_basic_operations(void)
@@ -182,8 +183,8 @@ static void test_bad_alloc(void)
 	std::cout << BYELLOW "\n=== TEST 12: Bad allocation test ===" RESET << std::endl;
 	try
 	{
-		Array<int> arr(1);
-		arr[0] = 42;
+		std::cout << "This should throw a std::bad_alloc exception due to large allocation." << std::endl;
+		Array<int *> arr(std::numeric_limits<unsigned int>::max());
 	}
 	catch (const std::exception& e)
 	{
